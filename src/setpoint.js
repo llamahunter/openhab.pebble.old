@@ -62,7 +62,6 @@ function createWindow(itemName, item, min, max, step, isDimmer, success) {
       newState = min;
     }
     Item.sendCommand(item, newState.toString(), function () {
-      item.state = newState;
       stateText.text(item.state);
     });    
   };
