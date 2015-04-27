@@ -111,9 +111,7 @@ function toggleSwitch(item, success) {
     command = 'OFF';
   }
   if (command) {
-    Item.sendCommand(item, command, function () {
-      success();
-    });
+    Item.sendCommand(item, command, success);
   }
 }
 
