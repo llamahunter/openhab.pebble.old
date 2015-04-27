@@ -86,7 +86,13 @@ exports.load = function () {
     
     function (error) {
       Util.log('Failed to fetch sitemaps: ' + error);
-      Util.error('Comm Error', "Can't fetch sitemaps");
+      if (Config.server == Config.localUrl && Config.remoteUrl) {
+        Util.log('Trying remote url');
+        Config.server = Config.remoteUrl;
+        exports.load();
+      } else {
+        Util.error('Comm Error', "Can't fetch sitemaps");
+      }
     }
   );
 };

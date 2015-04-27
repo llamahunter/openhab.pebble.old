@@ -29,8 +29,18 @@
                 "type": "font"
             },
             {
-                "file": "images/action-icon-onoff.png",
-                "name": "IMAGES_ACTION_ICON_ONOFF_PNG",
+                "file": "images/action_icon_down.png",
+                "name": "IMAGES_ACTION_ICON_DOWN_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/action_icon_up.png",
+                "name": "IMAGES_ACTION_ICON_UP_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/openhab-splash.png",
+                "name": "IMAGES_OPENHAB_SPLASH_PNG",
                 "type": "png"
             },
             {
@@ -40,18 +50,8 @@
                 "type": "png"
             },
             {
-                "file": "images/openhab-splash.png",
-                "name": "IMAGES_OPENHAB_SPLASH_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/action_icon_up.png",
-                "name": "IMAGES_ACTION_ICON_UP_PNG",
-                "type": "png"
-            },
-            {
-                "file": "images/action_icon_down.png",
-                "name": "IMAGES_ACTION_ICON_DOWN_PNG",
+                "file": "images/action-icon-onoff.png",
+                "name": "IMAGES_ACTION_ICON_ONOFF_PNG",
                 "type": "png"
             }
         ]
