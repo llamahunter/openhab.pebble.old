@@ -44,11 +44,17 @@ function createItem(widget) {
   var item = splitLabel(widget.label);
   switch (widget.type) {
     case 'Group':
-    case 'Setpoint':
-    case 'Slider':
     case 'Text':
       // use split label
       break;
+    case 'Slider':
+    case 'Setpoint':
+      // if they provided a split label, use it.  Otherwise...
+      if ( !('subtitle' in item)) {
+        // fall back on the item state
+        item.subtitle = widget.item.state;
+      }
+      break;      
     case 'Switch':
     case 'Selection':
       // if they provided a split label, use it.  Otherwise...
