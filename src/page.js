@@ -62,9 +62,10 @@ function createItem(widget) {
         var state = widget.item.state;
         // fall back on the item state, but...
         item.subtitle = state;
-        if ('mapping' in widget) {
+        var widgetMapping = (widget.mapping || widget.mappings);
+        if (widgetMapping) {
           // if there's a mapping, look up the item value label in it
-          var mappings = Util.arrayize(widget.mapping);
+          var mappings = Util.arrayize(widgetMapping);
           for (mapping of mappings) {
             if (mapping.command == state) {
               item.subtitle = mapping.label;
@@ -117,12 +118,12 @@ function toggleSwitch(item, success) {
 
 function createPageMenu(data, resetSitemap) {
   var sections = [];
-  var widgets = Util.arrayize(data.widget); 
+  var widgets = Util.arrayize(data.widget || data.widgets); 
   for (widget of widgets) {
     switch (widget.type) {
       case 'Frame':
         var items = [];
-        var subwidgets = Util.arrayize(widget.widget);
+        var subwidgets = Util.arrayize(widget.widget || widget.widgets);
         // add all the subwidgets of the frame to an item list
         for (subwidget of subwidgets) {
           items.push(createItem(subwidget));
@@ -170,16 +171,16 @@ function createPageMenu(data, resetSitemap) {
         case 'Switch':
           if (widget.item.type == 'SwitchItem') {
             toggleSwitch(widget.item, regenerateItem);
-          } else if ('mapping' in widget) {
-            var mappings = Util.arrayize(widget.mapping);
+          } else if ('mapping' in widget || 'mappings' in widget) {
+            var mappings = Util.arrayize(widget.mapping || widget.mappings);
             Mapping.change(e.item.title, widget.item, mappings, regenerateItem);
           } else {
             Util.log('Unsupported switch type: ' + widget.item.type);
           }
           break;
         case 'Selection':
-          if ('mapping' in widget) {
-            var mappings2 = Util.arrayize(widget.mapping);
+          if ('mapping' in widget || 'mappings' in widget) {
+            var mappings2 = Util.arrayize(widget.mapping || widget.mappings);
             Mapping.change(e.item.title, widget.item, mappings2, regenerateItem);
           } else {
             // unclear how to support selection without a mapping
