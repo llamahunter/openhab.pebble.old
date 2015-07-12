@@ -41,7 +41,7 @@ function splitLabel(label) {
 
 function createItem(widget) {
   // most items just use the split label
-  var item = splitLabel(widget.label);
+  var item = splitLabel(widget.label || wiget.name);
   switch (widget.type) {
     case 'Group':
     case 'Text':
@@ -78,7 +78,7 @@ function createItem(widget) {
     case 'ColorPicker':
       // not currently handled, but maybe someday? put it in with its type
       item = {
-        title: widget.label,
+        title: widget.label || widget.name,
         subtitle: widget.type
       };
       break;
@@ -130,7 +130,7 @@ function createPageMenu(data, resetSitemap) {
         }
         // push the frame section
         sections.push({
-          title: widget.label,
+          title: widget.label || widget.name,
           items: items
         });
         break;

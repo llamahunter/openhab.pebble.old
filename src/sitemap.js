@@ -32,7 +32,7 @@ function createSitemapMenu(sitemaps) {
   var items = [];
   for (sitemap of sitemaps) {
     items.push({
-      title: sitemap.label
+      title: sitemap.label || sitemap.name
     });
   }
   var menu = new UI.Menu({
