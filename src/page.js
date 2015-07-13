@@ -116,6 +116,24 @@ function toggleSwitch(item, success) {
   }
 }
 
+function toggleMappingSwitch(item, mapping, success) {
+  var command;
+  var newState;
+  // If it equals first mapping, toggle it to the second mapping
+  if (item.state == mapping[0].command) {
+    command = mapping[1].command;
+    newState = mapping[1].label;
+  // Otherwise default to the first mapping to account for complex 
+  //   scenarios such as groupings that may not always have a clear initial state
+  } else {
+    command = mapping[0].command;
+    newState = mapping[0].label;
+  }
+  if (command) {
+    Item.sendCommand(item, command, success);
+  }
+}
+
 function createPageMenu(data, resetSitemap) {
   var sections = [];
   var widgets = Util.arrayize(data.widget || data.widgets); 
@@ -173,7 +191,11 @@ function createPageMenu(data, resetSitemap) {
             toggleSwitch(widget.item, regenerateItem);
           } else if ('mapping' in widget || 'mappings' in widget) {
             var mappings = Util.arrayize(widget.mapping || widget.mappings);
-            Mapping.change(e.item.title, widget.item, mappings, regenerateItem);
+            if (mappings.length == 2) {
+              toggleMappingSwitch(widget.item, mappings, regenerateItem)
+            } else {
+              Mapping.change(e.item.title, widget.item, mappings, regenerateItem);
+            }
           } else {
             Util.log('Unsupported switch type: ' + widget.item.type);
           }
