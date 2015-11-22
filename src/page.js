@@ -168,7 +168,7 @@ function createPageMenu(data, resetSitemap) {
       };
       switch (widget.type) {
         case 'Switch':
-          if (widget.item.type == 'SwitchItem') {
+          if (widget.item.type == 'SwitchItem' || widget.item.type == 'GroupItem') {
             toggleSwitch(widget.item, regenerateItem);
           } else if ('mapping' in widget) {
             var mappings = Util.arrayize(widget.mapping);
@@ -188,7 +188,7 @@ function createPageMenu(data, resetSitemap) {
           break;
         case 'Slider':
         case 'Setpoint':
-          if (widget.item.type == 'DimmerItem') {
+          if (widget.item.type == 'DimmerItem' || widget.item.type == 'GroupItem') {
             Setpoint.dimmer(e.item.title, widget.item, regenerateItem);
           } else if (widget.item.type == 'NumberItem') {
             Setpoint.number(e.item.title, widget.item, widget.min, widget.max, widget.step, regenerateItem);
