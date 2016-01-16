@@ -122,10 +122,10 @@ limitations under the License.
 
 	  // Set the return URL depending on the runtime environment (emulator or Pebble Phone App)
 	  var return_to = getQueryParam('return_to', 'pebblejs://close#');
-	  var location = "pebblejs://close#" + encodeURIComponent(JSON.stringify(options));
+	  var location = return_to + encodeURIComponent(JSON.stringify(options));
 	  console.log("Warping to: " + location);
 	  console.log(location);
-	  document.location.href = return_to + location;
+	  document.location.href = location;
 	});
 
 	//Set form values to whatever is passed in.
