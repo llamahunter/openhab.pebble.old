@@ -68,6 +68,16 @@ limitations under the License.
 
 	<p>If you don't choose a Pebble specific sitemap, and more than one exists for your server, the sitemap selection menu will be displayed.  To bring up the sitemap selection menu on Pebble from any menu screen, long press the SELECT button.</p>
 
+        <div data-role="fieldcontain">
+	 <label for="voiceConfirm">Voice Confirmation:</label>
+          <select name="voiceConfirm" id="voiceConfirm" data-role="slider">
+            <option value="off">Off</option>
+            <option value="on">On</option>
+          </select>
+        </div>
+
+	<p>If enabled, voice commands will show a confirmation screen on the watch before being sent to openHAB.</p>
+
         <div class="ui-body ui-body-b">
           <fieldset class="ui-grid-a">
             <div class="ui-block-a"><button type="submit" data-theme="d" id="b-cancel">Cancel</button></div>
