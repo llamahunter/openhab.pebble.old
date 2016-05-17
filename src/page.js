@@ -41,7 +41,7 @@ function splitLabel(label) {
 
 function createItem(widget) {
   // most items just use the split label
-  var item = splitLabel(widget.label);
+  var item = splitLabel(widget.label || wiget.name);
   switch (widget.type) {
     case 'Group':
     case 'Text':
@@ -62,9 +62,10 @@ function createItem(widget) {
         var state = widget.item.state;
         // fall back on the item state, but...
         item.subtitle = state;
-        if ('mapping' in widget) {
+        var widgetMapping = (widget.mapping || widget.mappings);
+        if (widgetMapping) {
           // if there's a mapping, look up the item value label in it
-          var mappings = Util.arrayize(widget.mapping);
+          var mappings = Util.arrayize(widgetMapping);
           for (mapping of mappings) {
             if (mapping.command == state) {
               item.subtitle = mapping.label;
@@ -77,7 +78,7 @@ function createItem(widget) {
     case 'ColorPicker':
       // not currently handled, but maybe someday? put it in with its type
       item = {
-        title: widget.label,
+        title: widget.label || widget.name,
         subtitle: widget.type
       };
       break;
@@ -115,21 +116,39 @@ function toggleSwitch(item, success) {
   }
 }
 
+function toggleMappingSwitch(item, mapping, success) {
+  var command;
+  var newState;
+  // If it equals first mapping, toggle it to the second mapping
+  if (item.state == mapping[0].command) {
+    command = mapping[1].command;
+    newState = mapping[1].label;
+  // Otherwise default to the first mapping to account for complex 
+  //   scenarios such as groupings that may not always have a clear initial state
+  } else {
+    command = mapping[0].command;
+    newState = mapping[0].label;
+  }
+  if (command) {
+    Item.sendCommand(item, command, success);
+  }
+}
+
 function createPageMenu(data, resetSitemap) {
   var sections = [];
-  var widgets = Util.arrayize(data.widget); 
+  var widgets = Util.arrayize(data.widget || data.widgets); 
   for (widget of widgets) {
     switch (widget.type) {
       case 'Frame':
         var items = [];
-        var subwidgets = Util.arrayize(widget.widget);
+        var subwidgets = Util.arrayize(widget.widget || widget.widgets);
         // add all the subwidgets of the frame to an item list
         for (subwidget of subwidgets) {
           items.push(createItem(subwidget));
         }
         // push the frame section
         sections.push({
-          title: widget.label,
+          title: widget.label || widget.name,
           items: items
         });
         break;
@@ -170,16 +189,20 @@ function createPageMenu(data, resetSitemap) {
         case 'Switch':
           if (widget.item.type == 'SwitchItem') {
             toggleSwitch(widget.item, regenerateItem);
-          } else if ('mapping' in widget) {
-            var mappings = Util.arrayize(widget.mapping);
-            Mapping.change(e.item.title, widget.item, mappings, regenerateItem);
+          } else if ('mapping' in widget || 'mappings' in widget) {
+            var mappings = Util.arrayize(widget.mapping || widget.mappings);
+            if (mappings.length == 2) {
+              toggleMappingSwitch(widget.item, mappings, regenerateItem)
+            } else {
+              Mapping.change(e.item.title, widget.item, mappings, regenerateItem);
+            }
           } else {
             Util.log('Unsupported switch type: ' + widget.item.type);
           }
           break;
         case 'Selection':
-          if ('mapping' in widget) {
-            var mappings2 = Util.arrayize(widget.mapping);
+          if ('mapping' in widget || 'mappings' in widget) {
+            var mappings2 = Util.arrayize(widget.mapping || widget.mappings);
             Mapping.change(e.item.title, widget.item, mappings2, regenerateItem);
           } else {
             // unclear how to support selection without a mapping
